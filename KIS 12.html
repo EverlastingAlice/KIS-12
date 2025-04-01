@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймерное приложение</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #colorBox {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            margin: 20px auto;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Таймерное приложение</h1>
+
+    <!-- Пункт 1: Ввод текста и времени -->
+    <div>
+        <label for="textInput">Введите текст:</label>
+        <input type="text" id="textInput" placeholder="Введите текст">
+        <br>
+        <label for="timeInput">Время задержки (в секундах):</label>
+        <input type="number" id="timeInput" placeholder="Введите время" min="1">
+        <button id="displayTextButton">Отобразить текст</button>
+        <p id="outputText"></p>
+    </div>
+
+    <!-- Пункт 2: Мигающий квадрат -->
+    <div id="colorBox"></div>
+
+    <!-- Пункт 3: Обновление страницы через 10 секунд -->
+    <button id="refreshPageButton">Обновить страницу через 10 секунд</button>
+    <script>
+        // Пункт 1: Отображение текста через заданный интервал времени
+const textInput = document.getElementById('textInput');
+const timeInput = document.getElementById('timeInput');
+const displayTextButton = document.getElementById('displayTextButton');
+const outputText = document.getElementById('outputText');
+
+displayTextButton.addEventListener('click', () => {
+    const text = textInput.value.trim();
+    const delay = parseInt(timeInput.value) * 1000; // Преобразуем секунды в миллисекунды
+
+    if (!text || isNaN(delay) || delay <= 0) {
+        alert('Пожалуйста, введите корректный текст и время.');
+        return;
+    }
+
+    setTimeout(() => {
+        outputText.textContent = text;
+    }, delay);
+});
+
+// Пункт 2: Меняем цвет каждые 0.5 секунды
+const colorBox = document.getElementById('colorBox');
+const colors = ['blue', 'green', 'red', 'yellow', 'orange', 'black', 'white'];
+let colorIndex = 0;
+
+setInterval(() => {
+    colorBox.style.backgroundColor = colors[colorIndex];
+    colorIndex = (colorIndex + 1) % colors.length; // Циклический переход по массиву цветов
+}, 500);
+
+// Пункт 3: Обновление страницы через 10 секунд
+const refreshPageButton = document.getElementById('refreshPageButton');
+
+refreshPageButton.addEventListener('click', () => {
+    let countdown = 10;
+    refreshPageButton.disabled = true; // Отключаем кнопку после нажатия
+    const intervalId = setInterval(() => {
+        refreshPageButton.textContent = `Обновление через ${countdown} сек...`;
+        countdown--;
+
+        if (countdown < 0) {
+            clearInterval(intervalId);
+            location.reload(); // Обновляем страницу
+        }
+    }, 1000);
+});
+    </script>
+</body>
+</html>
